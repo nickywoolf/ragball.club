@@ -14,5 +14,6 @@ defmodule Ragball.Clubs.Club do
   def create_changeset(struct, attrs \\ %{}) do
     struct
     |> cast(attrs, [:name, :creator_id])
+    |> validate_required([:name])
   end
 end
