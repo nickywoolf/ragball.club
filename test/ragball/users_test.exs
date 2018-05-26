@@ -42,5 +42,13 @@ defmodule Ragball.UsersTest do
 
       assert [first_name: {"can't be blank", _}] = errors
     end
+
+    test "doesn't require a last name" do
+      params =
+        valid_user_params()
+        |> Map.delete(:last_name)
+
+      assert {:ok, _user} = Users.create_user(params)
+    end
   end
 end
