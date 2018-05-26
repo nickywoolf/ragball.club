@@ -22,6 +22,7 @@ defmodule Ragball.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Ragball.DataCase
+      import Ragball.TestFactories
     end
   end
 
