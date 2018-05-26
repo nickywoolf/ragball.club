@@ -5,9 +5,9 @@ defmodule Ragball.Repo.Migrations.AddUsersTable do
     execute("CREATE EXTENSION IF NOT EXISTS citext")
 
     create table(:users) do
-      add(:first_name, :text)
+      add(:first_name, :text, null: false)
       add(:last_name, :text)
-      add(:email, :citext)
+      add(:email, :citext, null: false)
 
       timestamps()
     end
