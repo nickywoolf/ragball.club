@@ -4,28 +4,20 @@ defmodule Ragball.ClubsTest do
 
   describe "create_club/2 given user and valid params" do
     setup do
-      club_name = "Portland"
+      club_params = valid_club_params() |> Map.put(:name, "Portland")
       {:ok, user} = create_user()
+      {:ok, club} = Clubs.create_club(user, club_params)
+      club = Repo.preload(club, :creator)
 
-      params =
-        valid_club_params()
-        |> Map.put(:name, club_name)
-
-      club =
-        case Clubs.create_club(user, params) do
-          {:ok, club} ->
-            Ragball.Repo.preload(club, :creator)
-        end
-
-      %{creator: user, club: club, club_name: club_name}
+      %{club: club, user: user}
     end
 
-    test "creates new club", %{club: club, club_name: club_name} do
-      assert club.name == club_name
+    test "creates new club", %{club: club} do
+      assert club.name == "Portland"
     end
 
-    test "creates new club with creator", %{club: club, creator: creator} do
-      assert club.creator == creator
+    test "creates new club with creator", %{club: club, user: user} do
+      assert club.creator == user
     end
   end
 end
