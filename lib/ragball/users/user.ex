@@ -8,13 +8,15 @@ defmodule Ragball.Users.User do
     field(:last_name, :string)
     field(:email, :string)
 
+    field(:password, :string, virtual: true)
+
     timestamps()
   end
 
   def create_changeset(struct, attrs \\ %{}) do
     struct
-    |> cast(attrs, [:first_name, :last_name, :email])
-    |> validate_required([:first_name, :email])
+    |> cast(attrs, [:first_name, :last_name, :email, :password])
+    |> validate_required([:first_name, :email, :password])
     |> validate_format(:email, email_format(), message: dgettext("errors", "is invalid"))
   end
 

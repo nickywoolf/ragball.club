@@ -28,7 +28,7 @@ defmodule Ragball.ClubsTest do
     end
 
     test "creates new club with creator", %{club: club, user: user} do
-      assert club.creator == user
+      assert club.creator.id == user.id
     end
   end
 

@@ -33,6 +33,16 @@ defmodule Ragball.UsersTest do
       assert [email: {"is invalid", _}] = errors
     end
 
+    test "requires a password" do
+      params =
+        valid_user_params()
+        |> Map.delete(:password)
+
+      {:error, %Ecto.Changeset{errors: errors}} = Users.create_user(params)
+
+      assert [password: {"can't be blank", _}] = errors
+    end
+
     test "requires a first name" do
       params =
         valid_user_params()
