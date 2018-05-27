@@ -15,5 +15,9 @@ defmodule RagballWeb.SessionControllerTest do
     test "creates new session", %{conn: conn, user: user} do
       assert get_session(conn, :user_id) == user.id
     end
+
+    test "assigns current user", %{conn: conn, user: user} do
+      assert conn.assigns.current_user.id == user.id
+    end
   end
 end

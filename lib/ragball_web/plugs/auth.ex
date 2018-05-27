@@ -7,6 +7,7 @@ defmodule RagballWeb.Plugs.Auth do
 
   def sign_in(conn, user) do
     conn
+    |> Plug.Conn.assign(:current_user, user)
     |> Plug.Conn.put_session(:user_id, user.id)
     |> Plug.Conn.configure_session(renew: true)
   end
