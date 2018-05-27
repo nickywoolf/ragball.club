@@ -19,6 +19,7 @@ defmodule Ragball.Users.User do
     |> cast(attrs, [:first_name, :last_name, :email, :password])
     |> validate_required([:first_name, :email, :password])
     |> validate_format(:email, email_format(), message: dgettext("errors", "is invalid"))
+    |> unique_constraint(:email)
     |> put_password_hash()
   end
 

@@ -12,9 +12,12 @@ defmodule Ragball.Repo.Migrations.AddUsersTable do
 
       timestamps()
     end
+
+    create(unique_index(:users, [:email]))
   end
 
   def down do
+    drop(index(:users, [:email]))
     drop(table(:users))
   end
 end

@@ -34,6 +34,18 @@ defmodule Ragball.UsersTest do
       assert [email: {"is invalid", _}] = errors
     end
 
+    test "requires a unique email address" do
+      params =
+        valid_user_params()
+        |> Map.put(:email, "jane@example.com")
+
+      {:ok, _user} = Users.create_user(params)
+
+      {:error, %Ecto.Changeset{errors: errors}} = Users.create_user(params)
+
+      assert [email: {"has already been taken", _}] = errors
+    end
+
     test "requires a password" do
       params =
         valid_user_params()
