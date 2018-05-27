@@ -11,4 +11,8 @@ defmodule Ragball.Users do
     |> create_user_changeset(params)
     |> Repo.insert()
   end
+
+  def find_user_by_email(email) do
+    Repo.get_by(User, email: email)
+  end
 end

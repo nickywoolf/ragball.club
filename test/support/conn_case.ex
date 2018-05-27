@@ -20,19 +20,20 @@ defmodule RagballWeb.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
       import RagballWeb.Router.Helpers
+      import Ragball.TestFactories
 
       # The default endpoint for testing
       @endpoint RagballWeb.Endpoint
     end
   end
 
-
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Ragball.Repo)
+
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(Ragball.Repo, {:shared, self()})
     end
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
-
 end
