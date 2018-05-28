@@ -32,17 +32,17 @@ defmodule Ragball.ClubsTest do
     end
 
     test "adds user as member", %{club: club, user: user} do
-      club = Repo.preload(club, :club_users)
+      club = Repo.preload(club, :members)
 
-      assert Enum.any?(club.club_users, &(&1.club_user_id == user.id))
+      assert Enum.any?(club.members, &(&1.member_id == user.id))
     end
 
     test "adds user as OWNER", %{club: club, user: user} do
-      club = Repo.preload(club, :club_users)
+      club = Repo.preload(club, :members)
 
-      assert club.club_users
+      assert club.members
              |> Enum.filter(&(&1.role == "OWNER"))
-             |> Enum.any?(&(&1.club_user_id == user.id))
+             |> Enum.any?(&(&1.member_id == user.id))
     end
   end
 

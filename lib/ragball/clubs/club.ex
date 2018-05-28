@@ -6,7 +6,7 @@ defmodule Ragball.Clubs.Club do
     field(:name, :string)
 
     belongs_to(:creator, Ragball.Users.User)
-    has_many(:club_users, Ragball.Clubs.ClubUser)
+    has_many(:members, Ragball.Clubs.Member)
 
     timestamps()
   end

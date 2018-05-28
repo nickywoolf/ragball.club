@@ -1,17 +1,18 @@
-defmodule Ragball.Clubs.ClubUser do
+defmodule Ragball.Clubs.Member do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "club_users" do
+  schema "club_members" do
     field(:role, :string)
+
     belongs_to(:club, Ragball.Clubs.Club)
-    belongs_to(:club_user, Ragball.Users.User)
+    belongs_to(:member, Ragball.Users.User)
 
     timestamps()
   end
 
   def changeset(struct, attrs \\ %{}) do
     struct
-    |> cast(attrs, [:role, :club_id, :club_user_id])
+    |> cast(attrs, [:role, :club_id, :member_id])
   end
 end

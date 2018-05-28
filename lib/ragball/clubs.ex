@@ -1,7 +1,7 @@
 defmodule Ragball.Clubs do
   alias Ecto.Multi
   alias Ragball.Clubs.Club
-  alias Ragball.Clubs.ClubUser
+  alias Ragball.Clubs.Member
   alias Ragball.Repo
   alias Ragball.Users
 
@@ -11,14 +11,14 @@ defmodule Ragball.Clubs do
 
     Multi.new()
     |> Multi.insert(:club, changeset)
-    |> Multi.run(:club_user, &create_owner(user, Map.get(&1, :club)))
+    |> Multi.run(:member, &create_owner(user, Map.get(&1, :club)))
     |> Multi.run(:user, &Users.set_current_club(user, Map.get(&1, :club)))
     |> Repo.transaction()
   end
 
   def create_owner(user, club) do
-    %ClubUser{}
-    |> ClubUser.changeset(%{club_user_id: user.id, club_id: club.id, role: "OWNER"})
+    %Member{}
+    |> Member.changeset(%{member_id: user.id, club_id: club.id, role: "OWNER"})
     |> Repo.insert()
   end
 end
