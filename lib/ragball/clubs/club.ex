@@ -1,12 +1,12 @@
 defmodule Ragball.Clubs.Club do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Ragball.Users.User
 
   schema "clubs" do
     field(:name, :string)
 
-    belongs_to(:creator, User)
+    belongs_to(:creator, Ragball.Users.User)
+    has_many(:club_users, Ragball.Clubs.ClubUser)
 
     timestamps()
   end

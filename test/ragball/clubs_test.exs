@@ -14,8 +14,7 @@ defmodule Ragball.ClubsTest do
         valid_club_params()
         |> Map.put(:name, "Portland")
 
-      {:ok, club} = Clubs.create_club(user, params)
-      club = Repo.preload(club, :creator)
+      {:ok, %{club: club, user: user}} = Clubs.create_club(user, params)
 
       %{club: club, user: user}
     end
@@ -25,7 +24,25 @@ defmodule Ragball.ClubsTest do
     end
 
     test "creates new club with creator", %{club: club, user: user} do
-      assert club.creator.id == user.id
+      assert club.creator_id == user.id
+    end
+
+    test "sets user's current club to new club", %{club: club, user: user} do
+      assert club.id == user.current_club_id
+    end
+
+    test "adds user as member", %{club: club, user: user} do
+      club = Repo.preload(club, :club_users)
+
+      assert Enum.any?(club.club_users, &(&1.club_user_id == user.id))
+    end
+
+    test "adds user as OWNER", %{club: club, user: user} do
+      club = Repo.preload(club, :club_users)
+
+      assert club.club_users
+             |> Enum.filter(&(&1.role == "OWNER"))
+             |> Enum.any?(&(&1.club_user_id == user.id))
     end
   end
 
@@ -34,7 +51,7 @@ defmodule Ragball.ClubsTest do
       valid_club_params()
       |> Map.delete(:name)
 
-    {:error, %Ecto.Changeset{errors: errors}} = Clubs.create_club(user, params)
+    {:error, :club, %Ecto.Changeset{errors: errors}, _} = Clubs.create_club(user, params)
 
     assert [name: {"can't be blank", _}] = errors
   end
