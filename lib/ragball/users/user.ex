@@ -1,5 +1,6 @@
 defmodule Ragball.Users.User do
   use Ecto.Schema
+
   import Ecto.Changeset
   import RagballWeb.Gettext
 
