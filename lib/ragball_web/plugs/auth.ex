@@ -36,6 +36,7 @@ defmodule RagballWeb.Plugs.Auth do
         {:error, :unauthorized, conn}
 
       true ->
+        dummy_checkpw()
         {:error, :not_found, conn}
     end
   end
