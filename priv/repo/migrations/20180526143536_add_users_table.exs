@@ -9,6 +9,7 @@ defmodule Ragball.Repo.Migrations.AddUsersTable do
       add(:last_name, :text)
       add(:email, :citext, null: false)
       add(:password_hash, :text, null: false)
+      add(:current_club_id, :integer, null: true)
 
       timestamps()
     end

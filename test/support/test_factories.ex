@@ -2,10 +2,12 @@ defmodule Ragball.TestFactories do
   alias Ragball.Users
 
   def valid_user_params do
+    random = random_string()
+
     %{
       first_name: "Jane",
       last_name: "Doe",
-      email: "jane@example.com",
+      email: "jane#{random}@example.com",
       password: "secret"
     }
   end
@@ -20,5 +22,12 @@ defmodule Ragball.TestFactories do
     valid_user_params()
     |> Map.merge(user_params)
     |> Users.create_user()
+  end
+
+  defp random_string do
+    8
+    |> :crypto.strong_rand_bytes()
+    |> Base.encode16()
+    |> String.downcase()
   end
 end

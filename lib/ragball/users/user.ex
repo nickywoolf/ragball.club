@@ -9,15 +9,21 @@ defmodule Ragball.Users.User do
     field(:last_name, :string)
     field(:email, :string)
     field(:password_hash, :string)
-
     field(:password, :string, virtual: true)
+
+    belongs_to(:current_club, Ragball.Clubs.Club)
 
     timestamps()
   end
 
-  def create_changeset(user, attrs \\ %{}) do
+  def changeset(user, attrs \\ %{}) do
     user
     |> cast(attrs, [:first_name, :last_name, :email, :password])
+  end
+
+  def create_changeset(user, attrs \\ %{}) do
+    user
+    |> changeset(attrs)
     |> validate_required([:first_name, :email, :password])
     |> validate_format(:email, email_format(), message: dgettext("errors", "is invalid"))
     |> unique_constraint(:email)
