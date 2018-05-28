@@ -3,16 +3,20 @@ defmodule RagballWeb.SessionController do
   alias RagballWeb.Plugs.Auth
 
   def create(conn, %{"session" => %{"email" => email, "password" => password}}) do
-    case Auth.sign_in_with_credentials(conn, email, password) do
-      {:ok, conn} ->
-        conn
-        |> put_flash(:info, "Welcome back")
-        |> redirect(to: "/")
+    conn
+    |> Auth.sign_in_with_credentials(email, password)
+    |> create_response()
+  end
 
-      {:error, _reason, conn} ->
-        conn
-        |> put_flash(:error, "Oops, those credentials are not correct")
-        |> render("new.html")
-    end
+  defp create_response({:ok, conn}) do
+    conn
+    |> put_flash(:info, "Welcome back")
+    |> redirect(to: "/")
+  end
+
+  defp create_response({:error, _reason, conn}) do
+    conn
+    |> put_flash(:error, "Oops, those credentials are not correct")
+    |> render("new.html")
   end
 end
