@@ -1,6 +1,7 @@
 defmodule Ragball.UsersTest do
   use Ragball.DataCase
   alias Ragball.Users
+  alias RagballWeb.Plugs.Auth
 
   describe "create_user/1" do
     test "creates new user given valid params" do
@@ -31,6 +32,38 @@ defmodule Ragball.UsersTest do
       {:error, %Ecto.Changeset{errors: errors}} = Users.create_user(params)
 
       assert [email: {"is invalid", _}] = errors
+    end
+
+    test "requires a unique email address" do
+      params =
+        valid_user_params()
+        |> Map.put(:email, "jane@example.com")
+
+      {:ok, _user} = Users.create_user(params)
+
+      {:error, %Ecto.Changeset{errors: errors}} = Users.create_user(params)
+
+      assert [email: {"has already been taken", _}] = errors
+    end
+
+    test "requires a password" do
+      params =
+        valid_user_params()
+        |> Map.delete(:password)
+
+      {:error, %Ecto.Changeset{errors: errors}} = Users.create_user(params)
+
+      assert [password: {"can't be blank", _}] = errors
+    end
+
+    test "stores hashed version of password" do
+      params =
+        valid_user_params()
+        |> Map.put(:password, "test-password")
+
+      {:ok, user} = Users.create_user(params)
+
+      assert Auth.correct_password?("test-password", user)
     end
 
     test "requires a first name" do

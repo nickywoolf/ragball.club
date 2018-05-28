@@ -14,11 +14,8 @@ defmodule Ragball.ClubsTest do
         valid_club_params()
         |> Map.put(:name, "Portland")
 
-      club =
-        case Clubs.create_club(user, params) do
-          {:ok, club} ->
-            Repo.preload(club, :creator)
-        end
+      {:ok, club} = Clubs.create_club(user, params)
+      club = Repo.preload(club, :creator)
 
       %{club: club, user: user}
     end
@@ -28,7 +25,7 @@ defmodule Ragball.ClubsTest do
     end
 
     test "creates new club with creator", %{club: club, user: user} do
-      assert club.creator == user
+      assert club.creator.id == user.id
     end
   end
 

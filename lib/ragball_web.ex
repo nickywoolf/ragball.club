@@ -28,8 +28,9 @@ defmodule RagballWeb do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/ragball_web/templates",
-                        namespace: RagballWeb
+      use Phoenix.View,
+        root: "lib/ragball_web/templates",
+        namespace: RagballWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
@@ -48,6 +49,7 @@ defmodule RagballWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+      import RagballWeb.Plugs.Auth, only: [assign_user_from_session: 2]
     end
   end
 

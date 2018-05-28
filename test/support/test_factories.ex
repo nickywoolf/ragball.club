@@ -5,7 +5,8 @@ defmodule Ragball.TestFactories do
     %{
       first_name: "Jane",
       last_name: "Doe",
-      email: "jane@example.com"
+      email: "jane@example.com",
+      password: "secret"
     }
   end
 
