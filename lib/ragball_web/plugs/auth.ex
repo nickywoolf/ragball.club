@@ -1,6 +1,5 @@
 defmodule RagballWeb.Plugs.Auth do
   @moduledoc """
-
   """
 
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
@@ -37,25 +36,31 @@ defmodule RagballWeb.Plugs.Auth do
         {:error, :unauthorized, conn}
 
       true ->
-        dummy_checkpw()
         {:error, :not_found, conn}
     end
   end
 
   @doc """
   """
-  def restore_user_from_session(conn, _opts \\ []) do
-    user_id = get_session(conn, :user_id)
+  def assign_user_from_session(conn, _opts \\ []) do
+    assign_current_user(conn, get_session(conn, :user_id))
+  end
 
-    cond do
-      user = conn.assigns[:current_user] ->
-        conn
+  defp assign_current_user(%{assigns: %{current_user: _user}} = conn, _user_id) do
+    conn
+  end
 
-      user = user_id && Users.get_user!(user_id) ->
+  defp assign_current_user(conn, nil) do
+    assign(conn, :current_user, nil)
+  end
+
+  defp assign_current_user(conn, user_id) do
+    case Users.get_user!(user_id) do
+      %User{} = user ->
         assign(conn, :current_user, user)
 
-      true ->
-        assign(conn, :current_user, nil)
+      _ ->
+        assign_current_user(conn, nil)
     end
   end
 end

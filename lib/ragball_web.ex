@@ -49,7 +49,7 @@ defmodule RagballWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
-      import RagballWeb.Plugs.Auth, only: [restore_user_from_session: 2]
+      import RagballWeb.Plugs.Auth, only: [assign_user_from_session: 2]
     end
   end
 
