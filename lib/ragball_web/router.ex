@@ -7,6 +7,7 @@ defmodule RagballWeb.Router do
     plug(:fetch_flash)
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
+    plug(:restore_user_from_session)
   end
 
   pipeline :api do
