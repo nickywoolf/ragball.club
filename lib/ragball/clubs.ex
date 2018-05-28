@@ -16,6 +16,12 @@ defmodule Ragball.Clubs do
     |> Repo.transaction()
   end
 
+  def add_member(user, club) do
+    %Member{}
+    |> Member.changeset(%{member_id: user.id, club_id: club.id, role: "MEMBER"})
+    |> Repo.insert()
+  end
+
   def create_owner(user, club) do
     %Member{}
     |> Member.changeset(%{member_id: user.id, club_id: club.id, role: "OWNER"})

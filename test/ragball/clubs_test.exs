@@ -55,4 +55,33 @@ defmodule Ragball.ClubsTest do
 
     assert [name: {"can't be blank", _}] = errors
   end
+
+  describe "add_member/2 given user and club" do
+    setup %{user: owner} do
+      params =
+        valid_club_params()
+        |> Map.put(:name, "Portland")
+
+      {:ok, %{club: club, user: owner}} = Clubs.create_club(owner, params)
+      {:ok, member} = create_user()
+      Clubs.add_member(member, club)
+      club = Repo.preload(club, :members)
+
+      %{club: club, member: member, owner: owner}
+    end
+
+    test "adds user as club member", %{club: club, member: member} do
+      assert Enum.count(club.members) == 2
+      assert Enum.any?(club.members, &(&1.member_id == member.id))
+    end
+
+    test "adds user with role MEMBER", %{club: club, member: member} do
+      club_member =
+        club.members
+        |> Enum.filter(&(&1.member_id == member.id))
+        |> Enum.at(0)
+
+      assert club_member.member_id == member.id
+    end
+  end
 end
