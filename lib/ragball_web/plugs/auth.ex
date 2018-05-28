@@ -26,25 +26,27 @@ defmodule RagballWeb.Plugs.Auth do
   @doc """
   """
   def sign_in_with_credentials(conn, email, password) do
-    user = Users.get_user_by_email(email)
-
-    cond do
-      user && correct_password?(password, user) ->
-        {:ok, sign_in(conn, user)}
-
-      user ->
-        {:error, :unauthorized, conn}
-
-      true ->
-        dummy_checkpw()
-        {:error, :not_found, conn}
-    end
+    email
+    |> Users.get_user_by_email()
+    |> sign_in_user(password, conn)
   end
 
   @doc """
   """
   def assign_user_from_session(conn, _opts \\ []) do
     assign_current_user(conn, get_session(conn, :user_id))
+  end
+
+  defp sign_in_user(nil = _user, _password, conn) do
+    dummy_checkpw()
+    {:error, :not_found, conn}
+  end
+
+  defp sign_in_user(user, password, conn) do
+    case correct_password?(password, user) do
+      true -> {:ok, sign_in(conn, user)}
+      _ -> {:error, :unauthorized, conn}
+    end
   end
 
   defp assign_current_user(%{assigns: %{current_user: _user}} = conn, _user_id) do
@@ -57,11 +59,8 @@ defmodule RagballWeb.Plugs.Auth do
 
   defp assign_current_user(conn, user_id) do
     case Users.get_user!(user_id) do
-      %User{} = user ->
-        assign(conn, :current_user, user)
-
-      _ ->
-        assign_current_user(conn, nil)
+      %User{} = user -> assign(conn, :current_user, user)
+      _ -> assign_current_user(conn, nil)
     end
   end
 end
