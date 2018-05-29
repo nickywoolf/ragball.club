@@ -18,6 +18,12 @@ defmodule Ragball.TestFactories do
     }
   end
 
+  def valid_game_params do
+    %{
+      location: "Test Location"
+    }
+  end
+
   def create_user(user_params \\ %{}) do
     valid_user_params()
     |> Map.merge(user_params)

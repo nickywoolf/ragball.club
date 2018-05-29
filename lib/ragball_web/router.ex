@@ -14,8 +14,14 @@ defmodule RagballWeb.Router do
     plug(:accepts, ["json"])
   end
 
+  pipeline :browser_api do
+    plug(:accepts, ["json"])
+    plug(:fetch_session)
+    plug(:put_secure_browser_headers)
+    plug(:assign_user_from_session)
+  end
+
   scope "/", RagballWeb do
-    # Use the default browser stack
     pipe_through(:browser)
 
     get("/", PageController, :index)
@@ -23,8 +29,9 @@ defmodule RagballWeb.Router do
     post("/sign_in", SessionController, :create)
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", RagballWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", RagballWeb.API do
+    pipe_through(:browser_api)
+
+    resources("/games", GameController, only: [:create])
+  end
 end
