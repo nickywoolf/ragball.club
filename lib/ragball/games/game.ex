@@ -2,8 +2,12 @@ defmodule Ragball.Games.Game do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Poison.Encoder,
-           only: [:id, :location, :start_at, :published_at, :club_id, :creator_id]}
+  @required ~w(location start_at)a
+  @optional ~w(published_at)a
+  @derive {
+    Poison.Encoder,
+    only: [:id, :location, :start_at, :published_at, :club_id, :creator_id]
+  }
 
   schema "games" do
     field(:location, :string)
@@ -18,7 +22,7 @@ defmodule Ragball.Games.Game do
 
   def create_changeset(game, attrs \\ %{}) do
     game
-    |> cast(attrs, [:location, :start_at, :published_at])
-    |> validate_required([:location, :start_at])
+    |> cast(attrs, @required, @optional)
+    |> validate_required(@required)
   end
 end

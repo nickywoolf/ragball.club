@@ -16,4 +16,10 @@ defmodule RagballWeb.API.GameController do
     |> put_status(:created)
     |> render("create.json", game: game)
   end
+
+  def create_response({:error, changeset}, conn) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> render(RagballWeb.ErrorView, "422.json", changeset: changeset)
+  end
 end
