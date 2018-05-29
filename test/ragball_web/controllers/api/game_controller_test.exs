@@ -2,23 +2,19 @@ defmodule RagballWeb.API.GameControllerTest do
   use RagballWeb.ConnCase
   alias Ragball.Games
 
+  setup %{conn: conn} do
+    {:ok, %{user: user, club: club}} = create_user_and_club()
+
+    {:ok, %{conn: conn, user: user, club: club}}
+  end
+
   describe "POST /api/games given valid params as authenticated user" do
-    setup %{conn: conn} do
-      {:ok, %{user: user, club: club}} = create_user_and_club()
+    setup %{conn: conn, user: user, club: club} do
+      %{conn: conn, game: game} =
+        %{location: "Irving Park", start_at: "2018-05-29 06:30:00"}
+        |> create_game_request(conn, user)
 
-      game_params =
-        valid_game_params()
-        |> Map.put(:location, "Irving Park")
-        |> Map.put(:start_at, "2018-05-29 06:30:00")
-
-      conn =
-        conn
-        |> assign(:current_user, user)
-        |> post("/api/games", %{game: game_params})
-
-      %{"game" => game} = json_response(conn, 201)
-
-      {:ok, %{conn: conn, user: user, club: club, game: game, game_params: game_params}}
+      {:ok, %{conn: conn, user: user, club: club, game: game}}
     end
 
     test "creates a new game", %{game: game} do
@@ -45,5 +41,20 @@ defmodule RagballWeb.API.GameControllerTest do
     test "creates game in draft state", %{game: game} do
       assert Games.list_drafts() |> Enum.any?(&(&1.id == game["id"]))
     end
+  end
+
+  defp create_game_request(game_params, conn, user) do
+    game_params =
+      valid_game_params()
+      |> Map.merge(game_params)
+
+    conn =
+      conn
+      |> assign(:current_user, user)
+      |> post("/api/games", %{game: game_params})
+
+    %{"game" => game} = json_response(conn, 201)
+
+    %{conn: conn, game: game}
   end
 end
