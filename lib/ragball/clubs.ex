@@ -27,4 +27,9 @@ defmodule Ragball.Clubs do
     |> Member.changeset(%{member_id: user.id, club_id: club.id, role: "OWNER"})
     |> Repo.insert()
   end
+
+  def current_club(user) do
+    user = Repo.preload(user, :current_club)
+    user.current_club
+  end
 end

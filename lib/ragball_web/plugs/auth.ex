@@ -16,6 +16,11 @@ defmodule RagballWeb.Plugs.Auth do
 
   @doc """
   """
+  def user(%Plug.Conn{assigns: %{current_user: user}}), do: user
+  def user(_conn), do: nil
+
+  @doc """
+  """
   def sign_in(conn, user) do
     conn
     |> assign(:current_user, user)
