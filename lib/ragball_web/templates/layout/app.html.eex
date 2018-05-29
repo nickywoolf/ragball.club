@@ -1,35 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= @view_module.title(@view_template, assigns) %></title>
+  <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+</head>
+<body class="bg-grey-lighter">
 
-    <title>Hello Ragball!</title>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-  </head>
+  <%= render @view_module, @view_template, assigns %>
 
-  <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
-        </nav>
-        <span class="logo"></span>
-      </header>
+  <%= if get_flash(@conn, :error) do %>
+    <div class="fixed pin-t pin-l w-full text-center">
+      <span class="absolute text-sm text-red-darker bg-red-lightest border-t-4 border-red-darker rounded-b-sm px-4 py-6 shadow-sm shadow" style="transform: translate(-50%, 0);" role="alert">
+        <%= get_flash(@conn, :error) %>
+      </span>
+    </div>
+  <% end %>
 
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+  <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
 
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
-
-    </div> <!-- /container -->
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
-  </body>
+</body>
 </html>

@@ -4,6 +4,12 @@ defmodule RagballWeb.SessionControllerTest do
   @sign_in_path session_path(RagballWeb.Endpoint, :create)
   @credentials %{email: "test@example.com", password: "SECRET"}
 
+  test "GET /sign_in displays sign in form", %{conn: conn} do
+    conn = get(conn, session_path(conn, :new))
+
+    assert html_response(conn, 200) =~ "Sign in"
+  end
+
   describe "POST /sign_in given valid credentials" do
     setup %{conn: conn} do
       {:ok, user} = create_user(@credentials)

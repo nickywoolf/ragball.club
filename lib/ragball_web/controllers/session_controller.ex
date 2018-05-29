@@ -2,6 +2,10 @@ defmodule RagballWeb.SessionController do
   use RagballWeb, :controller
   alias RagballWeb.Plugs.Auth
 
+  def new(conn, _params) do
+    render(conn, "new.html")
+  end
+
   def create(conn, %{"session" => %{"email" => email, "password" => password}}) do
     conn
     |> Auth.sign_in_with_credentials(email, password)

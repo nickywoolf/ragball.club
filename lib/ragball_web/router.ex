@@ -19,6 +19,7 @@ defmodule RagballWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :index)
+    get("/sign_in", SessionController, :new)
     post("/sign_in", SessionController, :create)
   end
 
