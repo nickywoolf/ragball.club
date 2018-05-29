@@ -21,7 +21,8 @@ defmodule Ragball.TestFactories do
 
   def valid_game_params do
     %{
-      location: "Test Location"
+      location: "Test Location",
+      start_at: DateTime.utc_now()
     }
   end
 

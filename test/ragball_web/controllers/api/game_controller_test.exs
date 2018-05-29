@@ -9,6 +9,7 @@ defmodule RagballWeb.API.GameControllerTest do
       game_params =
         valid_game_params()
         |> Map.put(:location, "Irving Park")
+        |> Map.put(:start_at, "2018-05-29 06:30:00")
 
       conn =
         conn
@@ -22,6 +23,10 @@ defmodule RagballWeb.API.GameControllerTest do
 
     test "creates a new game", %{game: game} do
       assert game["location"] == "Irving Park"
+    end
+
+    test "creates game with start_at time", %{game: game} do
+      assert game["start_at"] == "2018-05-29T06:30:00"
     end
 
     test "creates game for club", %{game: game, club: club} do

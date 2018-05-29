@@ -4,6 +4,7 @@ defmodule Ragball.Repo.Migrations.AddGamesTable do
   def change do
     create table(:games) do
       add(:location, :text, null: false)
+      add(:start_at, :naive_datetime, null: false)
       add(:published_at, :naive_datetime, null: true)
 
       add(:club_id, references(:clubs), null: false)
