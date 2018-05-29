@@ -14,17 +14,21 @@ defmodule RagballWeb.API.GameControllerTest do
         |> assign(:current_user, user)
         |> post("/api/games", %{game: game_params})
 
-      game = json_response(conn, 201)
+      %{"game" => game} = json_response(conn, 201)
 
       {:ok, %{conn: conn, user: user, club: club, game: game, game_params: game_params}}
     end
 
     test "creates a new game", %{game: game} do
-      assert game["game"]["location"] == "Irving Park"
+      assert game["location"] == "Irving Park"
     end
 
     test "creates game for club", %{game: game, club: club} do
-      assert game["game"]["club_id"] == club.id
+      assert game["club_id"] == club.id
+    end
+
+    test "creates game with user as creator", %{game: game, user: user} do
+      assert game["creator_id"] == user.id
     end
   end
 end

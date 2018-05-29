@@ -6,6 +6,7 @@ defmodule Ragball.Repo.Migrations.AddGamesTable do
       add(:location, :text, null: false)
 
       add(:club_id, references(:clubs), null: false)
+      add(:creator_id, references(:users), null: false)
 
       timestamps()
     end

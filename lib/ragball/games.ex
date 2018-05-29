@@ -8,6 +8,7 @@ defmodule Ragball.Games do
     |> Clubs.current_club()
     |> Ecto.build_assoc(:games)
     |> Game.create_changeset(params)
+    |> Ecto.Changeset.put_assoc(:creator, user)
     |> Repo.insert()
   end
 end
