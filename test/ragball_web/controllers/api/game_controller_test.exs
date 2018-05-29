@@ -1,5 +1,6 @@
 defmodule RagballWeb.API.GameControllerTest do
   use RagballWeb.ConnCase
+  alias Ragball.Games
 
   describe "POST /api/games given valid params as authenticated user" do
     setup %{conn: conn} do
@@ -29,6 +30,15 @@ defmodule RagballWeb.API.GameControllerTest do
 
     test "creates game with user as creator", %{game: game, user: user} do
       assert game["creator_id"] == user.id
+    end
+
+    test "creates game without published_at date", %{game: game} do
+      assert Map.has_key?(game, "published_at")
+      refute game["published_at"]
+    end
+
+    test "creates game in draft state", %{game: game} do
+      assert Games.list_drafts() |> Enum.any?(&(&1.id == game["id"]))
     end
   end
 end
