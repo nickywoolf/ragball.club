@@ -6,6 +6,9 @@ defmodule Ragball.Clubs do
   alias Ragball.Users
 
   def create_club(user, params) do
+    # TODO:
+    # Use Ecto.build_assoc/3 here -- checkout Ragball.Games.create_game/2
+    # Add has_many `:created_clubs` to Ragball.Users.User
     params_with_associations = Map.put(params, :creator_id, user.id)
     changeset = Club.create_changeset(%Club{}, params_with_associations)
 
