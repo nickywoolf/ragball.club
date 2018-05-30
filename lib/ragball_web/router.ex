@@ -1,10 +1,6 @@
 defmodule RagballWeb.Router do
   use RagballWeb, :router
 
-  alias RagballWeb.Plugs.AssignUserFromSession
-  alias RagballWeb.Plugs.DenyGuest
-  alias RagballWeb.Plugs.RedirectIfAuthenticated
-
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(:fetch_session)
