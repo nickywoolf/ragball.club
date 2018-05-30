@@ -74,4 +74,14 @@ defmodule RagballWeb.API.GameControllerTest do
       assert json_response(conn, 422) == %{"errors" => %{"start_at" => ["can't be blank"]}}
     end
   end
+
+  test "POST /api/games requires authenticated user", %{conn: conn} do
+    refute RagballWeb.Plugs.Auth.user(conn)
+
+    conn =
+      conn
+      |> post("/api/games", %{game: valid_game_params()})
+
+    assert json_response(conn, 401)
+  end
 end
