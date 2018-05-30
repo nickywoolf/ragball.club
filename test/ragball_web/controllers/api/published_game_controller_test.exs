@@ -17,9 +17,13 @@ defmodule RagballWeb.API.PublishedGameControllerTest do
     test "publishes game", %{game: original_game} do
       refute original_game.published_at
 
-      published_game = Games.get_game!(original_game.id)
+      fresh_game = Games.get_game!(original_game.id)
 
-      assert published_game.published_at
+      assert fresh_game.published_at
+    end
+
+    test "response with created status", %{conn: conn} do
+      assert json_response(conn, 201)
     end
   end
 end
