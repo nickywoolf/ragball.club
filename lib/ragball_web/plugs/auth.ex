@@ -3,7 +3,7 @@ defmodule RagballWeb.Plugs.Auth do
   """
 
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
-  import Phoenix.Controller, only: [render: 4, redirect: 2]
+  import Phoenix.Controller, only: [render: 4]
   import Plug.Conn
 
   alias Ragball.Users.User
@@ -41,20 +41,6 @@ defmodule RagballWeb.Plugs.Auth do
   """
   def assign_user_from_session(conn, _opts \\ []) do
     assign_current_user(conn, get_session(conn, :user_id))
-  end
-
-  @doc """
-  """
-  def redirect_if_authenticated(conn, _opts \\ []) do
-    case user(conn) do
-      %Ragball.Users.User{} = user ->
-        conn
-        |> redirect(to: "/c/#{user.current_club_id}")
-        |> Plug.Conn.halt()
-
-      nil ->
-        conn
-    end
   end
 
   @doc """

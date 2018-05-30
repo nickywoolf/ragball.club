@@ -1,6 +1,8 @@
 defmodule RagballWeb.Router do
   use RagballWeb, :router
 
+  alias RagballWeb.Plugs.RedirectIfAuthenticated
+
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(:fetch_session)
@@ -24,7 +26,7 @@ defmodule RagballWeb.Router do
 
   scope "/", RagballWeb do
     pipe_through(:browser)
-    pipe_through(:redirect_if_authenticated)
+    pipe_through(RedirectIfAuthenticated)
 
     get("/", PageController, :index)
     get("/sign-in", SessionController, :new)

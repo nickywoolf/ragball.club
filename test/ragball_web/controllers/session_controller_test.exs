@@ -13,7 +13,7 @@ defmodule RagballWeb.SessionControllerTest do
   end
 
   test "GET /sign-in redirects signed in user", %{conn: conn} do
-    {:ok, user} = create_user()
+    {:ok, %{user: user, club: _club}} = create_user_and_club()
 
     conn =
       conn
@@ -25,7 +25,7 @@ defmodule RagballWeb.SessionControllerTest do
 
   describe "POST /sign-in given valid credentials" do
     setup %{conn: conn} do
-      {:ok, user} = create_user(@credentials)
+      {:ok, %{user: user, club: _club}} = create_user_and_club(@credentials)
       conn = post(conn, "/sign-in", %{session: @credentials})
 
       {:ok, %{conn: conn, user: user}}
