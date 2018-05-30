@@ -52,8 +52,7 @@ defmodule RagballWeb do
 
       import RagballWeb.Plugs.Auth,
         only: [
-          assign_user_from_session: 2,
-          deny_guest: 2
+          assign_user_from_session: 2
         ]
     end
   end

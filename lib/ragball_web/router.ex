@@ -1,6 +1,7 @@
 defmodule RagballWeb.Router do
   use RagballWeb, :router
 
+  alias RagballWeb.Plugs.DenyGuest
   alias RagballWeb.Plugs.RedirectIfAuthenticated
 
   pipeline :browser do
@@ -21,7 +22,7 @@ defmodule RagballWeb.Router do
     plug(:fetch_session)
     plug(:put_secure_browser_headers)
     plug(:assign_user_from_session)
-    plug(:deny_guest, %{content_type: :json})
+    plug(DenyGuest, %{content_type: :json})
   end
 
   scope "/", RagballWeb do
