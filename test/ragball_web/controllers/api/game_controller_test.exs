@@ -44,17 +44,29 @@ defmodule RagballWeb.API.GameControllerTest do
     end
   end
 
-  test "POST /api/games required a location", %{conn: conn, user: user} do
-    game_params =
-      valid_game_params()
-      |> Map.delete(:location)
+  describe "POST /api/games requires a" do
+    setup %{conn: conn, user: user, delete_key: delete_key} do
+      game_params =
+        valid_game_params()
+        |> Map.delete(delete_key)
 
-    conn =
-      conn
-      |> assign(:current_user, user)
-      |> post("/api/games", %{game: game_params})
+      conn =
+        conn
+        |> assign(:current_user, user)
+        |> post("/api/games", %{game: game_params})
 
-    assert json_response(conn, 422) == %{"errors" => %{"location" => ["can't be blank"]}}
+      {:ok, %{conn: conn}}
+    end
+
+    @tag delete_key: :location
+    test "location", %{conn: conn} do
+      assert json_response(conn, 422) == %{"errors" => %{"location" => ["can't be blank"]}}
+    end
+
+    @tag delete_key: :start_at
+    test "start time", %{conn: conn} do
+      assert json_response(conn, 422) == %{"errors" => %{"start_at" => ["can't be blank"]}}
+    end
   end
 
   defp create_game_request(conn, game_params) do
