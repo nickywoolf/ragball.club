@@ -4,7 +4,7 @@ defmodule RagballWeb.Plugs.DenyGuest do
   end
 
   def call(conn, %{content_type: :json}) do
-    case RagballWeb.Plugs.Auth.user(conn) do
+    case RagballWeb.Auth.user(conn) do
       %Ragball.Users.User{} ->
         conn
 

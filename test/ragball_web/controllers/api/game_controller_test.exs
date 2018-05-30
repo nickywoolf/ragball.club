@@ -76,7 +76,7 @@ defmodule RagballWeb.API.GameControllerTest do
   end
 
   test "POST /api/games requires authenticated user", %{conn: conn} do
-    refute RagballWeb.Plugs.Auth.user(conn)
+    refute RagballWeb.Auth.user(conn)
 
     conn =
       conn

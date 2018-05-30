@@ -36,7 +36,7 @@ defmodule RagballWeb.API.PublishedGameControllerTest do
       conn
       |> post("/api/published-games", %{published_game: %{id: game.id}})
 
-    refute RagballWeb.Plugs.Auth.user(conn)
+    refute RagballWeb.Auth.user(conn)
     assert json_response(conn, 401) == %{"errors" => %{"auth" => ["Unauthorized"]}}
   end
 end

@@ -1,8 +1,8 @@
-defmodule RagballWeb.Plugs.AuthTest do
+defmodule RagballWeb.AuthTest do
   use ExUnit.Case, async: true
 
   alias Ragball.Users.User
-  alias RagballWeb.Plugs.Auth
+  alias RagballWeb.Auth
 
   describe "correct_password?/2" do
     test "true if password hashed matches hashed password" do

@@ -1,4 +1,4 @@
-defmodule RagballWeb.Plugs.Auth do
+defmodule RagballWeb.Auth do
   @moduledoc """
   """
 

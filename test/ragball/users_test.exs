@@ -1,7 +1,7 @@
 defmodule Ragball.UsersTest do
   use Ragball.DataCase
   alias Ragball.Users
-  alias RagballWeb.Plugs.Auth
+  alias RagballWeb.Auth
 
   describe "create_user/1" do
     test "creates new user given valid params" do

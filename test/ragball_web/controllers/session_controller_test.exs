@@ -1,6 +1,6 @@
 defmodule RagballWeb.SessionControllerTest do
   use RagballWeb.ConnCase
-  alias RagballWeb.Plugs.Auth
+  alias RagballWeb.Auth
 
   @credentials %{email: "test@example.com", password: "SECRET"}
 

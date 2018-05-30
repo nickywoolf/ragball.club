@@ -2,7 +2,7 @@ defmodule RagballWeb.API.GameController do
   use RagballWeb, :controller
 
   alias Ragball.Games
-  alias RagballWeb.Plugs.Auth
+  alias RagballWeb.Auth
 
   def create(conn, %{"game" => game_params}) do
     conn

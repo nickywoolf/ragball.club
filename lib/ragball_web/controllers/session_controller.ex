@@ -1,6 +1,6 @@
 defmodule RagballWeb.SessionController do
   use RagballWeb, :controller
-  alias RagballWeb.Plugs.Auth
+  alias RagballWeb.Auth
 
   def new(conn, _params) do
     render(conn, "new.html")

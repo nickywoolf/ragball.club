@@ -3,7 +3,7 @@ defmodule RagballWeb.Plugs.RedirectIfAuthenticated do
 
   alias RagballWeb.Router.Helpers, as: Routes
   alias Ragball.Users.User
-  alias RagballWeb.Plugs.Auth
+  alias RagballWeb.Auth
 
   def init(opts) do
     opts
