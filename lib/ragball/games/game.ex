@@ -23,4 +23,9 @@ defmodule Ragball.Games.Game do
     |> cast(attrs, [:location, :published_at, :start_at])
     |> validate_required([:location, :start_at])
   end
+
+  def publish_changeset(game) do
+    game
+    |> create_changeset(%{published_at: NaiveDateTime.utc_now()})
+  end
 end

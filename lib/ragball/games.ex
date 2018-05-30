@@ -14,7 +14,18 @@ defmodule Ragball.Games do
     |> Repo.insert()
   end
 
+  def get_game!(id) do
+    Repo.get!(Game, id)
+  end
+
   def list_drafts do
     from(g in Game, where: is_nil(g.published_at)) |> Repo.all()
+  end
+
+  def publish(id) do
+    id
+    |> Ragball.Games.get_game!()
+    |> Game.publish_changeset()
+    |> Repo.update()
   end
 end

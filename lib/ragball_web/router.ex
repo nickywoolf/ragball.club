@@ -33,5 +33,6 @@ defmodule RagballWeb.Router do
     pipe_through(:browser_api)
 
     resources("/games", GameController, only: [:create])
+    resources("/published-games", PublishedGameController, only: [:create])
   end
 end
