@@ -17,7 +17,7 @@ defmodule RagballWeb.Plugs.RedirectIfAuthenticated do
   end
 
   defp redirect_user(user, conn) do
-    path = Routes.club_path(conn, :show, user.current_club_id)
+    path = Routes.upcoming_game_path(conn, :index, user.current_club_id)
 
     conn
     |> redirect(to: path)

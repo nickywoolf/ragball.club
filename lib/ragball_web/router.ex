@@ -34,7 +34,7 @@ defmodule RagballWeb.Router do
   scope "/", RagballWeb do
     pipe_through(:browser)
 
-    resources("/c", ClubController, only: [:show])
+    get("/c/:slug/games", UpcomingGameController, :index)
   end
 
   scope "/api", RagballWeb.API do
