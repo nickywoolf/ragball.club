@@ -1,4 +1,6 @@
 defmodule Ragball.TestFactories do
+  alias Ragball.Clubs
+  alias Ragball.Games
   alias Ragball.Users
 
   def valid_user_params do
@@ -18,10 +20,32 @@ defmodule Ragball.TestFactories do
     }
   end
 
+  def valid_game_params do
+    %{
+      location: "Test Location",
+      start_at: NaiveDateTime.utc_now() |> to_string()
+    }
+  end
+
   def create_user(user_params \\ %{}) do
     valid_user_params()
     |> Map.merge(user_params)
     |> Users.create_user()
+  end
+
+  def create_club(user, club_params \\ %{}) do
+    club_params = Map.merge(valid_club_params(), club_params)
+    Clubs.create_club(user, club_params)
+  end
+
+  def create_user_and_club(user_params \\ %{}, club_params \\ %{}) do
+    {:ok, user} = create_user(user_params)
+    create_club(user, club_params)
+  end
+
+  def create_game(user, game_params \\ %{}) do
+    game_params = Map.merge(valid_game_params(), game_params)
+    Games.create_game(user, game_params)
   end
 
   defp random_string do

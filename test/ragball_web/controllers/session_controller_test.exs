@@ -1,13 +1,32 @@
 defmodule RagballWeb.SessionControllerTest do
   use RagballWeb.ConnCase
+  alias RagballWeb.Auth
 
-  @sign_in_path session_path(RagballWeb.Endpoint, :create)
   @credentials %{email: "test@example.com", password: "SECRET"}
 
-  describe "POST /sign_in given valid credentials" do
+  test "GET /sign-in displays sign in form to guests", %{conn: conn} do
+    refute Auth.user(conn)
+
+    conn = get(conn, "/sign-in")
+
+    assert html_response(conn, 200) =~ "Sign in"
+  end
+
+  test "GET /sign-in redirects signed in user", %{conn: conn} do
+    {:ok, %{user: user, club: _club}} = create_user_and_club()
+
+    conn =
+      conn
+      |> assign(:current_user, user)
+      |> get("/sign-in")
+
+    assert redirected_to(conn, 302)
+  end
+
+  describe "POST /sign-in given valid credentials" do
     setup %{conn: conn} do
-      {:ok, user} = create_user(@credentials)
-      conn = post(conn, @sign_in_path, %{session: @credentials})
+      {:ok, %{user: user, club: _club}} = create_user_and_club(@credentials)
+      conn = post(conn, "/sign-in", %{session: @credentials})
 
       {:ok, %{conn: conn, user: user}}
     end
@@ -41,7 +60,7 @@ defmodule RagballWeb.SessionControllerTest do
 
   describe "POST /sign_in given unkown email address" do
     setup %{conn: conn} do
-      conn = post(conn, @sign_in_path, %{session: @credentials})
+      conn = post(conn, "/sign-in", %{session: @credentials})
 
       {:ok, %{conn: conn}}
     end
@@ -65,7 +84,7 @@ defmodule RagballWeb.SessionControllerTest do
 
       conn =
         conn
-        |> post(@sign_in_path, %{
+        |> post("/sign-in", %{
           session: %{
             email: @credentials.email,
             password: "INCORRECT"

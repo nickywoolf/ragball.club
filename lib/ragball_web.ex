@@ -47,9 +47,13 @@ defmodule RagballWeb do
   def router do
     quote do
       use Phoenix.Router
+
       import Plug.Conn
       import Phoenix.Controller
-      import RagballWeb.Plugs.Auth, only: [assign_user_from_session: 2]
+
+      alias RagballWeb.Plugs.AssignUserFromSession
+      alias RagballWeb.Plugs.DenyGuest
+      alias RagballWeb.Plugs.RedirectIfAuthenticated
     end
   end
 

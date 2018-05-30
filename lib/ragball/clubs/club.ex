@@ -7,6 +7,7 @@ defmodule Ragball.Clubs.Club do
 
     belongs_to(:creator, Ragball.Users.User)
     has_many(:members, Ragball.Clubs.Member)
+    has_many(:games, Ragball.Games.Game)
 
     timestamps()
   end
