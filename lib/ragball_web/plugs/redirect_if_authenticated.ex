@@ -2,6 +2,7 @@ defmodule RagballWeb.Plugs.RedirectIfAuthenticated do
   import Phoenix.Controller, only: [redirect: 2]
 
   alias RagballWeb.Router.Helpers, as: Routes
+  alias Ragball.Clubs
   alias Ragball.Users.User
   alias RagballWeb.Auth
 
@@ -17,7 +18,8 @@ defmodule RagballWeb.Plugs.RedirectIfAuthenticated do
   end
 
   defp redirect_user(user, conn) do
-    path = Routes.upcoming_game_path(conn, :index, user.current_club_id)
+    club = Clubs.get_current_club(user)
+    path = Routes.upcoming_game_path(conn, :index, club)
 
     conn
     |> redirect(to: path)

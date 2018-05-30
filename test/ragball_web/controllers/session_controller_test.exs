@@ -12,23 +12,23 @@ defmodule RagballWeb.SessionControllerTest do
     assert html_response(conn, 200) =~ "Sign in"
   end
 
-  test "GET /sign-in redirects signed in user", %{conn: conn} do
-    {:ok, %{user: user, club: _club}} = create_user_and_club()
+  test "GET /sign-in redirects signed in user to club dashboard", %{conn: conn} do
+    {:ok, %{user: user, club: club}} = create_user_and_club()
 
     conn =
       conn
       |> assign(:current_user, user)
       |> get("/sign-in")
 
-    assert redirected_to(conn, 302)
+    assert redirected_to(conn, 302) == upcoming_game_path(conn, :index, club)
   end
 
   describe "POST /sign-in given valid credentials" do
     setup %{conn: conn} do
-      {:ok, %{user: user, club: _club}} = create_user_and_club(@credentials)
+      {:ok, %{user: user, club: club}} = create_user_and_club(@credentials)
       conn = post(conn, "/sign-in", %{session: @credentials})
 
-      {:ok, %{conn: conn, user: user}}
+      {:ok, %{conn: conn, user: user, club: club}}
     end
 
     test "creates new session", %{conn: conn, user: user} do
@@ -49,8 +49,8 @@ defmodule RagballWeb.SessionControllerTest do
       assert conn.assigns.current_user.id == user.id
     end
 
-    test "redirects to SOMEWHERE", %{conn: conn} do
-      assert redirected_to(conn) == "/"
+    test "redirects to club dashboard", %{conn: conn, club: club} do
+      assert redirected_to(conn) == upcoming_game_path(conn, :index, club)
     end
 
     test "displays welcome message", %{conn: conn} do
@@ -65,7 +65,7 @@ defmodule RagballWeb.SessionControllerTest do
       {:ok, %{conn: conn}}
     end
 
-    test "something about an error", %{conn: conn} do
+    test "displays default error", %{conn: conn} do
       assert get_flash(conn, :error) == "Oops, those credentials are not correct"
     end
 
@@ -94,7 +94,7 @@ defmodule RagballWeb.SessionControllerTest do
       {:ok, %{conn: conn}}
     end
 
-    test "something about an error", %{conn: conn} do
+    test "displays default error", %{conn: conn} do
       assert get_flash(conn, :error) == "Oops, those credentials are not correct"
     end
 

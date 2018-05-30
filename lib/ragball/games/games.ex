@@ -7,7 +7,7 @@ defmodule Ragball.Games do
 
   def create_game(user, params \\ %{}) do
     user
-    |> Clubs.current_club()
+    |> Clubs.get_current_club()
     |> Ecto.build_assoc(:games)
     |> Game.create_changeset(params)
     |> Ecto.Changeset.put_assoc(:creator, user)

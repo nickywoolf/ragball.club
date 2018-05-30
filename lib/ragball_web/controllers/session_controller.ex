@@ -1,5 +1,7 @@
 defmodule RagballWeb.SessionController do
   use RagballWeb, :controller
+
+  alias Ragball.Clubs
   alias RagballWeb.Auth
 
   def new(conn, _params) do
@@ -13,9 +15,14 @@ defmodule RagballWeb.SessionController do
   end
 
   defp create_response({:ok, conn}) do
+    club =
+      conn
+      |> Auth.user()
+      |> Clubs.get_current_club()
+
     conn
     |> put_flash(:info, "Welcome back")
-    |> redirect(to: "/")
+    |> redirect(to: upcoming_game_path(conn, :index, club))
   end
 
   defp create_response({:error, _reason, conn}) do
