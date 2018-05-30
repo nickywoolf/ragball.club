@@ -1,19 +1,18 @@
 defmodule RagballWeb.SessionControllerTest do
   use RagballWeb.ConnCase
 
-  @sign_in_path session_path(RagballWeb.Endpoint, :create)
   @credentials %{email: "test@example.com", password: "SECRET"}
 
-  test "GET /sign_in displays sign in form", %{conn: conn} do
-    conn = get(conn, session_path(conn, :new))
+  test "GET /sign-in displays sign in form", %{conn: conn} do
+    conn = get(conn, "/sign-in")
 
     assert html_response(conn, 200) =~ "Sign in"
   end
 
-  describe "POST /sign_in given valid credentials" do
+  describe "POST /sign-in given valid credentials" do
     setup %{conn: conn} do
       {:ok, user} = create_user(@credentials)
-      conn = post(conn, @sign_in_path, %{session: @credentials})
+      conn = post(conn, "/sign-in", %{session: @credentials})
 
       {:ok, %{conn: conn, user: user}}
     end
@@ -47,7 +46,7 @@ defmodule RagballWeb.SessionControllerTest do
 
   describe "POST /sign_in given unkown email address" do
     setup %{conn: conn} do
-      conn = post(conn, @sign_in_path, %{session: @credentials})
+      conn = post(conn, "/sign-in", %{session: @credentials})
 
       {:ok, %{conn: conn}}
     end
@@ -71,7 +70,7 @@ defmodule RagballWeb.SessionControllerTest do
 
       conn =
         conn
-        |> post(@sign_in_path, %{
+        |> post("/sign-in", %{
           session: %{
             email: @credentials.email,
             password: "INCORRECT"
