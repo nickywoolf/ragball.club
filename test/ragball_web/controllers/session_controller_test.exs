@@ -1,12 +1,26 @@
 defmodule RagballWeb.SessionControllerTest do
   use RagballWeb.ConnCase
+  alias RagballWeb.Plugs.Auth
 
   @credentials %{email: "test@example.com", password: "SECRET"}
 
-  test "GET /sign-in displays sign in form", %{conn: conn} do
+  test "GET /sign-in displays sign in form to guests", %{conn: conn} do
+    refute Auth.user(conn)
+
     conn = get(conn, "/sign-in")
 
     assert html_response(conn, 200) =~ "Sign in"
+  end
+
+  test "GET /sign-in redirects signed in user", %{conn: conn} do
+    {:ok, user} = create_user()
+
+    conn =
+      conn
+      |> assign(:current_user, user)
+      |> get("/sign-in")
+
+    assert redirected_to(conn, 302)
   end
 
   describe "POST /sign-in given valid credentials" do

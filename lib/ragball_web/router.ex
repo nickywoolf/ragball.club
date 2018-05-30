@@ -24,10 +24,17 @@ defmodule RagballWeb.Router do
 
   scope "/", RagballWeb do
     pipe_through(:browser)
+    pipe_through(:redirect_if_authenticated)
 
     get("/", PageController, :index)
     get("/sign-in", SessionController, :new)
     post("/sign-in", SessionController, :create)
+  end
+
+  scope "/", RagballWeb do
+    pipe_through(:browser)
+
+    resources("/c", ClubController, only: [:show])
   end
 
   scope "/api", RagballWeb.API do
