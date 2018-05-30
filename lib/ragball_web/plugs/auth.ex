@@ -3,6 +3,7 @@ defmodule RagballWeb.Plugs.Auth do
   """
 
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
+  import Phoenix.Controller, only: [render: 4]
   import Plug.Conn
 
   alias Ragball.Users.User
@@ -40,6 +41,21 @@ defmodule RagballWeb.Plugs.Auth do
   """
   def assign_user_from_session(conn, _opts \\ []) do
     assign_current_user(conn, get_session(conn, :user_id))
+  end
+
+  @doc """
+  """
+  def deny_guest(conn, %{content_type: :json}) do
+    case user(conn) do
+      %Ragball.Users.User{} ->
+        conn
+
+      nil ->
+        conn
+        |> Plug.Conn.put_status(:unauthorized)
+        |> render(RagballWeb.ErrorView, "401.json", [])
+        |> Plug.Conn.halt()
+    end
   end
 
   defp sign_in_user(nil = _user, _password, conn) do

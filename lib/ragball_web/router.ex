@@ -19,6 +19,7 @@ defmodule RagballWeb.Router do
     plug(:fetch_session)
     plug(:put_secure_browser_headers)
     plug(:assign_user_from_session)
+    plug(:deny_guest, %{content_type: :json})
   end
 
   scope "/", RagballWeb do
