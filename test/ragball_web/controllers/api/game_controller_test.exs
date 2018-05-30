@@ -10,10 +10,16 @@ defmodule RagballWeb.API.GameControllerTest do
 
   describe "POST /api/games given valid params as authenticated user" do
     setup %{conn: conn, user: user, club: club} do
-      %{conn: conn, game: game} =
+      game_params =
+        valid_game_params()
+        |> Map.merge(%{location: "Irving Park", start_at: "2018-05-29 06:30:00"})
+
+      conn =
         conn
         |> assign(:current_user, user)
-        |> create_game_request(%{location: "Irving Park", start_at: "2018-05-29 06:30:00"})
+        |> post("/api/games", %{game: game_params})
+
+      %{"game" => game} = json_response(conn, 201)
 
       {:ok, %{conn: conn, user: user, club: club, game: game}}
     end
@@ -67,13 +73,5 @@ defmodule RagballWeb.API.GameControllerTest do
     test "start time", %{conn: conn} do
       assert json_response(conn, 422) == %{"errors" => %{"start_at" => ["can't be blank"]}}
     end
-  end
-
-  defp create_game_request(conn, game_params) do
-    game_params = valid_game_params() |> Map.merge(game_params)
-    conn = post(conn, "/api/games", %{game: game_params})
-    %{"game" => game} = json_response(conn, 201)
-
-    %{conn: conn, game: game}
   end
 end
