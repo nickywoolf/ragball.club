@@ -35,4 +35,8 @@ defmodule Ragball.Clubs do
     user = Repo.preload(user, :current_club)
     user.current_club
   end
+
+  def get_club_by_slug(slug) do
+    Repo.get_by(Club, slug: slug)
+  end
 end

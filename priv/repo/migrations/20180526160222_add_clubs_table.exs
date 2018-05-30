@@ -4,6 +4,7 @@ defmodule Ragball.Repo.Migrations.AddClubsTable do
   def change do
     create table(:clubs) do
       add(:name, :text, null: false)
+      add(:slug, :text, null: false)
 
       add(:creator_id, references(:users), null: false)
 

@@ -13,6 +13,7 @@ defmodule Ragball.ClubsTest do
       params =
         valid_club_params()
         |> Map.put(:name, "Portland")
+        |> Map.delete(:slug)
 
       {:ok, %{club: club, user: user}} = Clubs.create_club(user, params)
 
@@ -21,6 +22,10 @@ defmodule Ragball.ClubsTest do
 
     test "creates new club", %{club: club} do
       assert club.name == "Portland"
+    end
+
+    test "creates club with slug", %{club: club} do
+      assert club.slug == "portland"
     end
 
     test "creates new club with creator", %{club: club, user: user} do

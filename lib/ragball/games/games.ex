@@ -22,6 +22,10 @@ defmodule Ragball.Games do
     from(g in Game, where: is_nil(g.published_at)) |> Repo.all()
   end
 
+  def list_upcoming do
+    from(g in Game, where: not is_nil(g.published_at)) |> Repo.all()
+  end
+
   def publish(id) do
     id
     |> Ragball.Games.get_game!()

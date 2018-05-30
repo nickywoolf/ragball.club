@@ -16,7 +16,8 @@ defmodule Ragball.TestFactories do
 
   def valid_club_params do
     %{
-      name: "Test Club"
+      name: "Test Club",
+      slug: "test-club"
     }
   end
 
