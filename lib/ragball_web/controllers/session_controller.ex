@@ -4,6 +4,8 @@ defmodule RagballWeb.SessionController do
   alias Ragball.Clubs
   alias RagballWeb.Auth
 
+  plug(:put_layout, "page.html")
+
   def new(conn, _params) do
     render(conn, "new.html")
   end
