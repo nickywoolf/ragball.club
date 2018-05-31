@@ -9,23 +9,6 @@
 </head>
 <body class="bg-grey-lightest">
 
-<header class="bg-white border-b border-grey-light">
-  <div class="container mx-auto">
-    <nav class="flex -mx-4 text-grey-darker">
-      <div class="px-4 py-4">Ragball</div>
-      <ul class="flex-grow flex justify-end list-reset text-sm font-light">
-        <li class="p-4">Clubs</li>
-        <li class="p-4 -mb-px border-b-2 border-blue text-blue-dark">Games</li>
-        <li class="p-4"><%= @current_user.first_name %></li>
-      </ul>
-    </nav>
-  </div>
-</header>
-
-<div class="container mx-auto mt-6 px-4 py-2 bg-white rounded-full text-xs text-grey-darkest font-light border border-grey-light">
-  <%= Ragball.Clubs.get_current_club(@current_user).name %> <span class="text-grey px-1">></span> Games <span class="text-grey px-1">></span> Future
-</div>
-
 <%= render @view_module, @view_template, assigns %>
 
 <%= if get_flash(@conn, :error) do %>
