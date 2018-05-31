@@ -1,4 +1,4 @@
-defmodule RagballWeb.UpcomingGameControllerTest do
+defmodule RagballWeb.GameControllerTest do
   use RagballWeb.ConnCase
 
   describe "GET /c/:club_slug/games as signed in user" do
@@ -16,7 +16,7 @@ defmodule RagballWeb.UpcomingGameControllerTest do
       conn =
         conn
         |> assign(:current_user, user)
-        |> get(upcoming_game_path(conn, :index, club))
+        |> get(game_path(conn, :index, club))
 
       {:ok, %{conn: conn, club: club, user: user, games: games}}
     end

@@ -1,4 +1,4 @@
-defmodule RagballWeb.UpcomingGameView do
+defmodule RagballWeb.GameView do
   use RagballWeb, :view
 
   def title("index.html", %{club: club}) do

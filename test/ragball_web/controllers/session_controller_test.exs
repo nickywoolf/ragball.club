@@ -20,7 +20,7 @@ defmodule RagballWeb.SessionControllerTest do
       |> assign(:current_user, user)
       |> get("/sign-in")
 
-    assert redirected_to(conn, 302) == upcoming_game_path(conn, :index, club)
+    assert redirected_to(conn, 302) == game_path(conn, :index, club)
   end
 
   describe "POST /sign-in given valid credentials" do
@@ -50,7 +50,7 @@ defmodule RagballWeb.SessionControllerTest do
     end
 
     test "redirects to club dashboard", %{conn: conn, club: club} do
-      assert redirected_to(conn) == upcoming_game_path(conn, :index, club)
+      assert redirected_to(conn) == game_path(conn, :index, club)
     end
 
     test "displays welcome message", %{conn: conn} do

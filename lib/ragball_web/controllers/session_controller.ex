@@ -24,7 +24,7 @@ defmodule RagballWeb.SessionController do
 
     conn
     |> put_flash(:info, "Welcome back")
-    |> redirect(to: upcoming_game_path(conn, :index, club))
+    |> redirect(to: game_path(conn, :index, club))
   end
 
   defp create_response({:error, _reason, conn}) do

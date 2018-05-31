@@ -1,4 +1,4 @@
-defmodule RagballWeb.UpcomingGameController do
+defmodule RagballWeb.GameController do
   use RagballWeb, :controller
 
   def index(conn, %{"slug" => slug}) do
