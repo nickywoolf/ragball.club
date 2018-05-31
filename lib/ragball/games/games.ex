@@ -18,8 +18,10 @@ defmodule Ragball.Games do
     Repo.get!(Game, id)
   end
 
-  def list_drafts do
-    from(g in Game, where: is_nil(g.published_at)) |> Repo.all()
+  def list_drafts(user) do
+    (g in list_query(user))
+    |> from(where: is_nil(g.published_at))
+    |> Repo.all()
   end
 
   def list_upcoming(user) do

@@ -45,8 +45,8 @@ defmodule RagballWeb.API.GameControllerTest do
       refute game["published_at"]
     end
 
-    test "creates game in draft state", %{game: game} do
-      assert Games.list_drafts() |> Enum.any?(&(&1.id == game["id"]))
+    test "creates game in draft state", %{user: user, game: game} do
+      assert Games.list_drafts(user) |> Enum.any?(&(&1.id == game["id"]))
     end
   end
 
