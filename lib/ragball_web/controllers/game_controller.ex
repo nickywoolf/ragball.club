@@ -3,6 +3,12 @@ defmodule RagballWeb.GameController do
 
   def index(conn, %{"slug" => slug}) do
     club = Ragball.Clubs.get_club_by_slug(slug)
-    render(conn, "index.html", club: club)
+
+    games =
+      conn
+      |> RagballWeb.Auth.user()
+      |> Ragball.Games.list_upcoming()
+
+    render(conn, "index.html", club: club, games: games)
   end
 end

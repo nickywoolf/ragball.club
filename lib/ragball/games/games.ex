@@ -22,8 +22,10 @@ defmodule Ragball.Games do
     from(g in Game, where: is_nil(g.published_at)) |> Repo.all()
   end
 
-  def list_upcoming do
-    from(g in Game, where: not is_nil(g.published_at)) |> Repo.all()
+  def list_upcoming(user) do
+    (g in list_query(user))
+    |> from(where: not is_nil(g.published_at))
+    |> Repo.all()
   end
 
   def publish(id) do
@@ -31,5 +33,10 @@ defmodule Ragball.Games do
     |> Ragball.Games.get_game!()
     |> Game.publish_changeset()
     |> Repo.update()
+  end
+
+  defp list_query(user) do
+    club = Clubs.get_current_club(user)
+    from(g in Game, where: g.club_id == ^club.id)
   end
 end
